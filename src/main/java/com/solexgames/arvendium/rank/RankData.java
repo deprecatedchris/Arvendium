@@ -8,12 +8,19 @@ import org.bukkit.ChatColor;
 @Setter
 public class RankData {
 
-    private String name;
-    private String prefix;
-    private String suffix;
     private boolean defaultRank;
+    private String name, prefix, suffix;
 
-    private int weight;
+    private int weight = 0;
+
+    /**
+     * Rank Data Constructor.
+     *
+     * @param name the name.
+     * @param prefix the prefix.
+     * @param suffix the suffix.
+     * @param defaultRank the defaultRank.
+     */
 
     public RankData(String name, String prefix, String suffix, boolean defaultRank) {
         this.name = name;

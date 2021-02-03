@@ -3,7 +3,6 @@ package com.solexgames.arvendium.rank;
 import com.solexgames.arvendium.ArvendiumPlugin;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -12,10 +11,8 @@ import java.util.UUID;
 @Setter
 public class Rank {
 
-    @Getter
-    private static List<Rank> ranks = new ArrayList<>();
-    @Getter
-    private static ArvendiumPlugin main = ArvendiumPlugin.getInstance();
+    @Getter private static List<Rank> ranks = new ArrayList<>();
+    @Getter private static ArvendiumPlugin main = ArvendiumPlugin.getInstance();
 
     private List<UUID> inheritance;
     private List<String> permissions;
@@ -24,6 +21,15 @@ public class Rank {
     private RankData data;
 
     private int weight;
+
+    /**
+     * Rank Constructor.
+     *
+     * @param uuid the uuid.
+     * @param inheritance the inheritance.
+     * @param permissions the permissions.
+     * @param data the data.
+     */
 
     public Rank(UUID uuid, List<UUID> inheritance, List<String> permissions, RankData data) {
         this.uuid = uuid;

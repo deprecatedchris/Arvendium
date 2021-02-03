@@ -1,23 +1,25 @@
 package com.solexgames.arvendium;
 
+import com.solexgames.arvendium.command.ArvendiumCommand;
+import com.solexgames.arvendium.command.ImportCommand;
 import com.solexgames.arvendium.command.grant.CGrantCommand;
+import com.solexgames.arvendium.command.grant.GrantCommand;
+import com.solexgames.arvendium.command.grant.GrantsCommand;
+import com.solexgames.arvendium.database.Database;
+import com.solexgames.arvendium.handler.RankHandler;
 import com.solexgames.arvendium.jedis.JedisPublisher;
 import com.solexgames.arvendium.jedis.JedisSubscriber;
-import com.solexgames.arvendium.profile.Profile;
-import com.solexgames.arvendium.listener.ProfileListener;
-import com.solexgames.arvendium.handler.RankHandler;
-import com.solexgames.arvendium.command.*;
-import com.solexgames.arvendium.command.grant.GrantCommand;
 import com.solexgames.arvendium.listener.GrantListener;
-import com.solexgames.arvendium.command.grant.GrantsCommand;
+import com.solexgames.arvendium.listener.ProfileListener;
+import com.solexgames.arvendium.profile.Profile;
 import com.solexgames.arvendium.util.command.CommandHandler;
-import com.solexgames.arvendium.database.Database;
 import com.solexgames.arvendium.util.file.ConfigFile;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.JedisPool;
+
+import java.util.Arrays;
 
 @Getter
 public class ArvendiumPlugin extends JavaPlugin {
@@ -49,7 +51,11 @@ public class ArvendiumPlugin extends JavaPlugin {
         this.rankHandler = new RankHandler(this);
 
         this.registerCommands();
-        this.registerListeners();
+
+        Arrays.asList(
+                new ProfileListener(),
+                new GrantListener()
+        ).forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, this));
     }
 
     public void onDisable() {
@@ -65,13 +71,6 @@ public class ArvendiumPlugin extends JavaPlugin {
 
         this.rankHandler.save();
         this.coreDatabase.getClient().close();
-    }
-
-    private void registerListeners() {
-        PluginManager pluginManager = Bukkit.getPluginManager();
-
-        pluginManager.registerEvents(new ProfileListener(), this);
-        pluginManager.registerEvents(new GrantListener(), this);
     }
 
     private void registerCommands() {

@@ -15,11 +15,21 @@ public class Grant {
     private UUID issuer;
     private UUID rankId;
 
-    private long dateAdded;
-    private long duration;
+    private long dateAdded, duration;
 
     private String reason;
     private boolean active;
+
+    /**
+     * Grant Constructor.
+     *
+     * @param issuer the issuer.
+     * @param rank the rank.
+     * @param dateAdded the dateAdded.
+     * @param duration the duration.
+     * @param reason the reason.
+     * @param active if the rank is active or not.
+     */
 
     public Grant(UUID issuer, Rank rank, long dateAdded, long duration, String reason, boolean active) {
         this.issuer = issuer;
