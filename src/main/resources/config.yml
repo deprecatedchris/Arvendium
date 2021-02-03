@@ -1,0 +1,9 @@
+DATABASE:
+  MONGO:
+    URI: ""
+  REDIS:
+    HOST: ""
+    PORT: 1234
+    AUTHENTICATION:
+      ENABLED: TRUE
+      PASSWORD: ""
