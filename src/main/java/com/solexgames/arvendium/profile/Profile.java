@@ -6,9 +6,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
-import com.solexgames.arvendium.ArvendiumPlugin;
-import com.solexgames.arvendium.grant.Grant;
-import com.solexgames.arvendium.rank.Rank;
+import com.solexgames.arvendium.Arvendium;
+import com.solexgames.arvendium.profile.grant.Grant;
+import com.solexgames.arvendium.profile.rank.Rank;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
@@ -30,7 +30,7 @@ public class Profile {
     @Getter
     private static Set<Profile> profiles = new HashSet<>();
     @Setter
-    private static ArvendiumPlugin main = ArvendiumPlugin.getInstance();
+    private static Arvendium main = Arvendium.getInstance();
 
     private UUID uuid;
     private List<String> permissions;
@@ -82,7 +82,7 @@ public class Profile {
     }
 
     public Profile load() {
-        Document document = Profile.main.getCoreDatabase().getProfiles().find(Filters.eq("uuid", this.uuid.toString())).first();
+        Document document = Profile.main.getCoreDatabaseManager().getProfiles().find(Filters.eq("uuid", this.uuid.toString())).first();
         if (document != null) {
             for (JsonElement element : new JsonParser().parse(document.getString("grants")).getAsJsonArray()) {
                 JsonObject keyGrant = element.getAsJsonObject();
@@ -215,7 +215,7 @@ public class Profile {
         }
         profileDocument.put("grants", grantsDocument.toString());
         profileDocument.put("permissions", this.permissions);
-        Profile.main.getCoreDatabase().getProfiles().replaceOne(Filters.eq("uuid", this.uuid.toString()), profileDocument, new UpdateOptions().upsert(true));
+        Profile.main.getCoreDatabaseManager().getProfiles().replaceOne(Filters.eq("uuid", this.uuid.toString()), profileDocument, new UpdateOptions().upsert(true));
     }
 
     public static Profile getByUuid(UUID uuid) {
@@ -260,6 +260,6 @@ public class Profile {
 
     static {
         Profile.profiles = new HashSet<>();
-        Profile.main = ArvendiumPlugin.getInstance();
+        Profile.main = Arvendium.getInstance();
     }
 }
